@@ -84,3 +84,21 @@ const getResponsesForMessage = ({message, userKey}) => {
                        }
                        });
 };
+
+curl -X POST -H "Content-Type: application/json" -d '{
+"setting_type":"greeting",
+"greeting":{
+    "text":"Hi {{user_first_name}}, welcome to this bot."
+}
+}' 
+
+curl -X POST -H "Content-Type: application/json" -d '{
+"setting_type":"call_to_actions",
+"thread_state":"new_thread",
+"call_to_actions":[
+                   {
+                   "payload":"USER_DEFINED_PAYLOAD"
+                   }
+                   ],
+"result": "Successfully added new_thread's CTAs"
+}'
