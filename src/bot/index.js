@@ -10,70 +10,32 @@ import * as nyt from './nyt_search';
  domain_action_type: 'add'};
 */
 const defaultResponses = {
-pickSections:{
-    text: "Pick or type in a section below:",
-    quick_replies:[
-      {
-        content_type: 'text',
-        title: 'U.S.',
-        payload: 'U.S.'
-      },
-      {
-        content_type: 'text',
-        title: 'World',
-        payload: 'World'
-      },
-      {
-        content_type: 'text',
-        title: 'Education',
-        payload: 'Education'
-      },
-      {
-        content_type: 'text',
-        title: 'The Upshot',
-        payload: 'The Upshot'
-      },
-    {
-        content_type: 'text',
-        title: 'Technology',
-        payload: 'Technology'
-      },
-    {
-        content_type: 'text',
-        title: 'All Sections',
-        payload: 'all-sections'
-      }    ]
-  },
   instructions: {
     type: 'template',
     payload: {
       template_type: 'button',
-      text: "Get a random article!",
+      text: "Choose or type in one of the following keywords: U.S., World, The Upshot, Sports, Opinion, Fashion & Style, Magazine, Arts, Travel, Your Money, Food, Books",
       buttons: [
         {
           type: 'postback',
-          title: 'Press me!',
-          payload: 'random'
+          title: 'U.S.',
+          payload: 'U.S.'
         },
         {
           type: 'postback',
-          title: 'Show me a picure!',
-          payload: 'picture'
+          title: 'World',
+          payload: 'World'
+        },
+        {
+          type: 'postback',
+          title: 'All Sections',
+          payload: 'all-sections'
         },
       ]
     }
   },
-  greetingMessage: {
-    setting_type: 'call_to_actions',
-    thread_state: 'new_thread',
-    call_to_actions: [
-    {
-    payload: {
-        text:"Greetings from the unofficial New York Times Mesenger Bot! You can get the top NYT articles from all sections here."
-    }
-    }
-    ]
-  },
+greetingMessage:"Greetings from the unofficial New York Times Mesenger Bot! You can read the top NYT articles across different sections right here.",
+    
   invalidMessage: "Sorry, didn't understand that!",
   failure: "Sorry, something went wrong!",
   hereYouGo: "Here's a cool article! -> ",
@@ -152,7 +114,7 @@ const buildMessage = (message, key) => {
 const getResponsesForMessage = ({message, userKey}) => {
   return new Promise((resolve, reject) => {
     if(message.text === 'Get Started') {
-      resolve([defaultResponses.greetingMessage, defaultResponses.pickSections]);
+      resolve([defaultResponses.greetingMessage, defaultResponses.instructions]);
     } else if(message.text === 'random') {
       wiki.getRandomWikiArticleLink()
         .then(link => {
@@ -161,7 +123,10 @@ const getResponsesForMessage = ({message, userKey}) => {
             resolve([responses.failure])
         })
     } else if(message.text === 'U.S.' || message.text === 'World' || message.text === 'Education' || message.text === 'The Upshot'
-              || message.text === 'Technology' || message.text === 'all-sections' ) {
+              || message.text === 'Technology' || message.text === 'all-sections' || message.text === 'Sports'
+              || message.text === 'Opinion' || message.text === 'Movies' || message.text === 'Fashion & Style' || message.text === 'Health'
+              || message.text === 'Magazine' || message.text === 'Multimedia' || message.text === 'Arts' || message.text === 'Sunday Review'
+              || message.text === 'Travel' || message.text === 'Your Money' || message.text === 'Food' || message.text === 'Books' ) {
         
         var cat = message.text;
         var freq = 1;
