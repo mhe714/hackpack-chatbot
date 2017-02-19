@@ -4,7 +4,11 @@
 import * as wiki from './wiki';
 import responses from './responses';
 import * as nyt from './nyt_search';
-
+/*
+ {setting_type : 'domain_whitelisting',
+ whitelisted_domains : ["https://nytimes.com/","https://nyt.com","https://treehacks.com"],
+ domain_action_type: 'add'};
+*/
 const defaultResponses = {
   // these are just some various responses you might want to send
   instructions: {
@@ -43,6 +47,31 @@ const defaultResponses = {
     payload: {
       url:"https://www.treehacks.com/resources/8b33313807172d5cdb9ccaef39fd3d6b.png"
     }
+  },
+  newsMessage:{
+    type: 'template',
+    payload: {
+        template_type: 'generic',
+        elements: [
+          {
+            title: 'Breaking News: Record Thunderstorms',
+            subtitle: 'The local area is due for record thunderstorms over the weekend.',
+            image_url: "https://www.treehacks.com/resources/8b33313807172d5cdb9ccaef39fd3d6b.png",
+            default_action: {
+              type: 'web_url',
+              url: "https://www.nytimes.com",
+              messenger_extensions: false,
+              webview_height_ratio: 'tall',
+              fallback_url: "https://www.nytimes.com"
+            },
+            buttons:[
+              {
+                type: 'element_share'
+              }              
+            ]
+          }
+        ]
+     }
   }
 }
 
@@ -94,10 +123,38 @@ const getResponsesForMessage = ({message, userKey}) => {
                      
         nyt.getPicture(cat, freq)
         .then(result => {
-              var title = result['results'][0]['title'];
-              var abstract = result['results'][0]['abstract'];
-              var pic = result.results[0].media[0]['media-metadata'][2].url;
-              resolve([title, abstract, pic]);
+              var rtitle = result['results'][0]['title'];
+              var rabstract = result['results'][0]['abstract'];
+              var rimg_url = result.results[0].media[0]['media-metadata'][2].url;
+              var rurl = result.results[0].url;
+              
+              var msg = {newsMessage:{
+              type: 'template',
+              payload: {
+              template_type: 'generic',
+              elements: [
+                         {
+                         title: rtitle,
+                         subtitle: rabstract,
+                         image_url: rimg_url,
+                         default_action: {
+                         type: 'web_url',
+                         url: rurl,
+                         messenger_extensions: false,
+                         webview_height_ratio: 'tall',
+                         //fallback_url: "https://www.nytimes.com"
+                         },
+                         buttons:[
+                                  {
+                                  type: 'element_share'
+                                  }              
+                            ]
+                         }
+                         ]
+              }
+              }
+              }
+              resolve([msg.newsMessage]);
         }).catch(() => {
             resolve([responses.failure])
         })
