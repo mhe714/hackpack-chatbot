@@ -121,25 +121,21 @@ const getResponsesForMessage = ({message, userKey}) => {
         var cat = "Opinion";
         var freq = 1;
                      
-        nyt.getPicture(cat, freq)
+        nyt.getArticle(cat, freq)
         .then(result => {
-              var rtitle = result['results'][0]['title'];
-              var rabstract = result['results'][0]['abstract'];
-              var rimg_url = result.results[0].media[0]['media-metadata'][2].url;
-              var rurl = result.results[0].url;
-              
               var msg = {newsMessage:{
               type: 'template',
               payload: {
               template_type: 'generic',
+              //top_element_style: 'large',
               elements: [
-                         {
-                         title: rtitle,
-                         subtitle: rabstract,
-                         image_url: rimg_url,
+                    {
+                         title: result['results'][0]['title'],
+                         subtitle: result['results'][0]['abstract'],
+                         image_url: result.results[0].media[0]['media-metadata'][2].url,
                          default_action: {
                          type: 'web_url',
-                         url: rurl,
+                         url: result.results[0].url,
                          messenger_extensions: false,
                          webview_height_ratio: 'tall',
                          //fallback_url: "https://www.nytimes.com"
@@ -148,12 +144,78 @@ const getResponsesForMessage = ({message, userKey}) => {
                                   {
                                   type: 'element_share'
                                   }              
-                            ]
-                         }
-                         ]
-              }
-              }
-              }
+                        ]
+                    },
+                    {
+                         title: result['results'][1]['title'],
+                         subtitle: result['results'][1]['abstract'],
+                         image_url: result.results[1].media[0]['media-metadata'][2].url,
+                         default_action: {
+                         type: 'web_url',
+                         url: result.results[1].url,
+                         messenger_extensions: false,
+                         webview_height_ratio: 'tall',
+                         //fallback_url: "https://www.nytimes.com"
+                         },
+                         buttons:[
+                                  {
+                                  type: 'element_share'
+                                  }              
+                        ]
+                    },
+                    {
+                         title: result['results'][2]['title'],
+                         subtitle: result['results'][2]['abstract'],
+                         image_url: result.results[2].media[0]['media-metadata'][2].url,
+                         default_action: {
+                         type: 'web_url',
+                         url: result.results[2].url,
+                         messenger_extensions: false,
+                         webview_height_ratio: 'tall',
+                         //fallback_url: "https://www.nytimes.com"
+                         },
+                         buttons:[
+                                  {
+                                  type: 'element_share'
+                                  }              
+                        ]
+                    },
+                    {
+                         title: result['results'][3]['title'],
+                         subtitle: result['results'][3]['abstract'],
+                         image_url: result.results[3].media[0]['media-metadata'][2].url,
+                         default_action: {
+                         type: 'web_url',
+                         url: result.results[3].url,
+                         messenger_extensions: false,
+                         webview_height_ratio: 'tall',
+                         //fallback_url: "https://www.nytimes.com"
+                         },
+                         buttons:[
+                                  {
+                                  type: 'element_share'
+                                  }              
+                        ]
+                    },
+                    {
+                         title: result['results'][4]['title'],
+                         subtitle: result['results'][4]['abstract'],
+                         image_url: result.results[4].media[0]['media-metadata'][2].url,
+                         default_action: {
+                         type: 'web_url',
+                         url: result.results[4].url,
+                         messenger_extensions: false,
+                         webview_height_ratio: 'tall',
+                         //fallback_url: "https://www.nytimes.com"
+                         },
+                         buttons:[
+                                  {
+                                  type: 'element_share'
+                                  }              
+                        ]
+                    }
+                ]
+              }}}
               resolve([msg.newsMessage]);
         }).catch(() => {
             resolve([responses.failure])
