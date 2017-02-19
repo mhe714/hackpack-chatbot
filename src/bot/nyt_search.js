@@ -9,11 +9,9 @@ export const getPicture = (category, freq) => {
             'q': "trump"
         }
     }).then(data => {
-            data = JSON.parse(data);
-            console.log(data['status']);
-        return data.results[0].title;
         if(data) {
-            return data.results[0].title;
+            data = JSON.parse(data);
+            return data;
         } else {
             throw new Error('failed to parse id from nyt response');
         }

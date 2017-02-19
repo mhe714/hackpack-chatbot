@@ -91,14 +91,16 @@ const getResponsesForMessage = ({message, userKey}) => {
     } else if(message.text === 'picture') {
         var cat = "Opinion";
         var freq = 1;
-        var result = nyt.getPicture(cat, freq);
-        var title = result;
-                     //console.log(result);
-                     //var abstract = result.results[0].abstract;
-                     //var pic = result.results[0].media[0]['media-metadata'][0].url;
-                     //var link = result.results[0].url;
-                     //resolve([title]);
-
+                     
+        nyt.getPicture(cat, freq)
+        .then(result => {
+              var title = result['results'][0]['title'];
+              var abstract = result['results'][0]['abstract'];
+              var pic = result.results[0].media[0]['media-metadata'][0].url;
+              resolve([title, abstract, pic]);
+        }).catch(() => {
+            resolve([responses.failure])
+        })
     } else if(responses.hasOwnProperty(message.text)) {
       resolve([responses[message.text]]);
     } else {
