@@ -36,6 +36,12 @@ const defaultResponses = {
         "content_type":"location",
       }
     ]
+  },
+  pictures: {
+    type:'image',
+    payload: {
+      url:"https://www.treehacks.com/resources/8b33313807172d5cdb9ccaef39fd3d6b.png"
+    }
   }
 }
 
@@ -82,7 +88,8 @@ const getResponsesForMessage = ({message, userKey}) => {
         resolve([responses.failure])
         })
     } else if(message.text === 'picture') {
-      resolve([defaultResponses.locationInstruction]);
+      //resolve([defaultResponses.locationInstruction]);
+      resolve([defaultResponses.pictures]);
     } else if(responses.hasOwnProperty(message.text)) {
       resolve([responses[message.text]]);
     } else {
