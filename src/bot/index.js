@@ -3,6 +3,7 @@
  */
 import * as wiki from './wiki';
 import responses from './responses';
+import * as nyt from './nyt_search';
 
 const defaultResponses = {
   // these are just some various responses you might want to send
@@ -85,11 +86,19 @@ const getResponsesForMessage = ({message, userKey}) => {
         .then(link => {
             resolve([defaultResponses.hereYouGo, link]);
         }).catch(() => {
-        resolve([responses.failure])
+            resolve([responses.failure])
         })
     } else if(message.text === 'picture') {
-      //resolve([defaultResponses.locationInstruction]);
-      resolve([defaultResponses.pictures]);
+        var cat = "Opinion";
+        var freq = 1;
+        var result = nyt.getPicture(cat, freq);
+        var title = result;
+                     //console.log(result);
+                     //var abstract = result.results[0].abstract;
+                     //var pic = result.results[0].media[0]['media-metadata'][0].url;
+                     //var link = result.results[0].url;
+                     //resolve([title]);
+
     } else if(responses.hasOwnProperty(message.text)) {
       resolve([responses[message.text]]);
     } else {
