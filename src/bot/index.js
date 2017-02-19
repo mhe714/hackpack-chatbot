@@ -17,13 +17,18 @@ const defaultResponses = {
           title: 'Press me!',
           payload: 'random'
         },
+        {
+          type: 'postback',
+          title: 'Show me a picure!',
+          payload: 'picture'
+        },
       ]
     }
   },
   greetingMessage: "Hello world!",
   invalidMessage: "Sorry, didn't understand that!",
   failure: "Sorry, something went wrong!",
-  hereYouGo: "Here's a cool article",
+  hereYouGo: "Here's a cool article! -> ",
   locationInstruction: {
     text: 'Please share your location.',
     quick_replies: [
@@ -72,10 +77,12 @@ const getResponsesForMessage = ({message, userKey}) => {
     } else if(message.text === 'random') {
       wiki.getRandomWikiArticleLink()
         .then(link => {
-        resolve([responses.hereYouGo, link]);
+            resolve([defaultResponses.hereYouGo, link]);
         }).catch(() => {
         resolve([responses.failure])
         })
+    } else if(message.text === 'picture') {
+      resolve([defaultResponses.locationInstruction]);
     } else if(responses.hasOwnProperty(message.text)) {
       resolve([responses[message.text]]);
     } else {
