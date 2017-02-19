@@ -96,7 +96,7 @@ const getResponsesForMessage = ({message, userKey}) => {
         .then(result => {
               var title = result['results'][0]['title'];
               var abstract = result['results'][0]['abstract'];
-              var pic = result.results[0].media[0]['media-metadata'][0].url;
+              var pic = result.results[0].media[0]['media-metadata'][2].url;
               resolve([title, abstract, pic]);
         }).catch(() => {
             resolve([responses.failure])
