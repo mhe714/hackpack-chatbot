@@ -3,6 +3,20 @@ import * as _ from 'lodash';
 import config from '../config';
 import * as bot from '../bot/index';
 
+const msg = {
+    greetingMessage: {
+    setting_type: 'call_to_actions',
+    thread_state: 'new_thread',
+    call_to_actions: [
+    {
+    payload: {
+        text:"Greetings from the unofficial New York Times Mesenger Bot! You can get the top NYT articles from all sections here."
+    }
+    }
+    ]
+}
+}
+
 // For webhook verification with messenger's platform
 export let verifyMessenger = (req, res) => {
   if (req.query['hub.mode'] === 'subscribe' &&
@@ -10,6 +24,7 @@ export let verifyMessenger = (req, res) => {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
       
+      sendGreeting(msg.greetingMessage, 1291683924245460);
   } else {
     console.error("Failed validation. Make sure the validation tokens match.");
     res.sendStatus(403);
@@ -108,6 +123,32 @@ const parseMessageObj = (event) => {
   }
 
   return msg;
+};
+
+// Sends message to senderId's messenger
+let sendGreeting = (messageData, senderId) => {
+  if(messageData) {
+    return new Promise((resolve, reject) => {
+      request({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+        qs: {
+          access_token: config.messengerPageToken
+        },
+        method: 'POST',
+        json: {
+          recipient: {
+            id: senderId
+          },
+          message: messageData
+        }
+      })
+      .then(result => {
+        resolve();
+      });
+    });
+  } else {
+    return Promise.resolve();
+  }
 };
 
 // Sends message to senderId's messenger
